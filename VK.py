@@ -104,26 +104,28 @@ class Work_with_users(VK_get_id):
                             attachments.append(f'photo{photo["owner_id"]}_{photo["id"]}')
 
                         message_text = f"Имя и фамилия: {name} {last_name}\nСсылка на профиль: {profile_url}"
-                        vk.messages.send(
-                            peer_id=peer_id,
-                            message=message_text,
-                            attachment=','.join(attachments),
-                            random_id=randrange(10**7)
-                        )
+
+                        write_msg(user_id, message_text)
+
+                        # vk.messages.send(
+                        #     peer_id=peer_id,
+                        #     message=message_text,
+                        #     attachment=','.join(attachments),
+                        #     random_id=randrange(10**7)
+                        # )
 
                     else:
                         print(f"Нет доступных фотографий для пользователя {user_id}.")
-                else:
-                    print("Нет пользователей, подходящих под критерии поиска.")
+            else:
+                print("Нет пользователей, подходящих под критерии поиска.")
 
 
 
 def write_msg(user_id, message):
-    vk.messages.send('messages.send',
-                {'user_id': user_id,
-                'message': message,
-                'random_id': randrange(10 ** 7),
-                }
+    vk.messages.send(
+        user_id=user_id,
+        message=message,
+        random_id=randrange(10 ** 7)
     )
 
 def listen_for_messages():
@@ -143,7 +145,11 @@ def listen_for_messages():
                     write_msg(event.user_id, "Не поняла вашего ответа...")
 
 
-listen_for_messages()
+
+if __name__ == "__main__":
+    listen_for_messages()
+    user_id = user_id
+
 
 # vk_get = VK_get(vk_token)
 # user_info = vk_get.get_user_info(user_id, fields='bdate,sex,city')
